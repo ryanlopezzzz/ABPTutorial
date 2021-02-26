@@ -46,12 +46,12 @@ class Dump:
         outfile : string
           Name of the output file
     """
-    with open(outfile, 'w') as out:
+    with open(outfile, 'w') as out:rf
 
-      out.write("#  id x y ipx ipy nx ny vx vy fx fy\n")
-      for p in self.sys.get():
-        out.write('{:4d}  {:.6f}  {:.6f}  {:.4d} {:.4d}  {:.6f}  {:.6f}  {:.6f}  {:.6f}  {:.6f}  {:.6f}\n'.format(
-            p.id, p.r.x, p.r.y, p.ip.x, p.ip.y, p.n.x, p.n.y, p.v.x, p.v.y, p.f.x, p.f.y))
+      out.write("#  id x y ipx ipy nx ny vx vy\n")
+      for p in self.sys.get_particles():
+        out.write('{:4d}  {:.6f}  {:.6f}  {:.4f} {:.4f}  {:.6f}  {:.6f}  {:.6f}  {:.6f}\n'.format(
+            p.id, p.r.x, p.r.y, p.ip.x, p.ip.y, p.n.x, p.n.y, p.v.x, p.v.y))
 
   def dump_json(self, outfile):
     """
