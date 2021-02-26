@@ -20,7 +20,7 @@ from math import sin, cos, sqrt, pi
 from random import uniform
 import json
 
-def random_init(phi, Lx, Ly = None, rcut = None, outfile = 'test.json', max_attempts = 10):
+def random_init(phi, Lx, Ly = None, rcut = None, poly = None, outfile = 'test.json', max_attempts = 10):
   """
     Create a random initial condition.
     Parameters
@@ -35,6 +35,8 @@ def random_init(phi, Lx, Ly = None, rcut = None, outfile = 'test.json', max_atte
       rcut : float
         Distance cutoff for building a nonoverlapping initial configuration. If None (default), 
         particles can overlap.
+      poly : float
+        Radius of uniform distribution for polydispersity. If None (default), particles are monodisperse.
       outfile : str
         Name of the output JSON file. Caller has to ensure correct extension
       max_attempts : int
@@ -73,8 +75,12 @@ def random_init(phi, Lx, Ly = None, rcut = None, outfile = 'test.json', max_atte
           n = [cos(theta), sin(theta)]
           v = [0.0, 0.0]
           f = [0.0, 0.0]
+          if poly != None:
+            radius = (1+uniform(-0.5,0.5) * poly) * 0.5*rcut
+          else:
+            radius = 0.5*rcut
           # Add a particle at position x,y with the director pointing in the random direction
-          particles.append({'id': i, 'r': r, 'n': n, 'v': v, 'f': f, 'radius': 0.5*rcut})
+          particles.append({'id': i, 'r': r, 'n': n, 'v': v, 'f': f, 'radius': radius})
           i += 1
           break 
         else:
