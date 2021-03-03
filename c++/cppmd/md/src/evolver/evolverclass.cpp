@@ -7,6 +7,7 @@
 //here include all the hpp files of the forces
 #include "../potentials/harmonicforce.hpp"
 #include "../potentials/selfpropulsion.hpp"
+#include "../potentials/softrepulsiveforce.hpp"
 
 //here include all the hpp files of the torques
 #include "../potentials/polar_align.hpp"
@@ -69,6 +70,13 @@ void EvolverClass::add_force(const std::string &name, std::map<std::string, real
     {
         //add the force to the list
         force_list[name] = std::make_unique<SelfPropulsionForce>(_system, *neighbourlist.get());
+        for (auto param : parameters)
+            force_list[name]->set_property(param.first, param.second);
+    }
+    else if (name.compare("Soft Repulsive Force") == 0)
+    {
+        //add the force to the list
+        force_list[name] = std::make_unique<SoftRepulsiveForce>(_system, *neighbourlist.get());
         for (auto param : parameters)
             force_list[name]->set_property(param.first, param.second);
     }

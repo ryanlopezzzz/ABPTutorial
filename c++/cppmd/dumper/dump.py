@@ -46,7 +46,7 @@ class Dump:
         outfile : string
           Name of the output file
     """
-    with open(outfile, 'w') as out:rf
+    with open(outfile, 'w') as out:
 
       out.write("#  id x y ipx ipy nx ny vx vy\n")
       for p in self.sys.get_particles():
