@@ -20,7 +20,7 @@ from math import sin, cos, sqrt, pi
 from random import uniform
 import json
 
-def random_init(phi, Lx, Ly = None, rcut = None, poly = None, outfile = 'test.json', max_attempts = 10):
+def random_init(phi, Lx, Ly = None, radius = 0, rcut = None, poly = None, outfile = 'test.json', max_attempts = 10):
   """
     Create a random initial condition.
     Parameters
@@ -49,6 +49,8 @@ def random_init(phi, Lx, Ly = None, rcut = None, poly = None, outfile = 'test.js
   N = int(round(phi*A))
   xmin, xmax = -0.5*lx, 0.5*lx 
   ymin, ymax = -0.5*ly, 0.5*ly
+  if radius == 0 and rcut != None:
+    radius = 0.5*rcut 
   if rcut == None:
     for i in range(N):
       r = [uniform(xmin, xmax), uniform(ymin, ymax)]
@@ -57,7 +59,7 @@ def random_init(phi, Lx, Ly = None, rcut = None, poly = None, outfile = 'test.js
       v = [0.0, 0.0]
       f = [0.0, 0.0]
       # Add a particle at position x,y with the director pointing in the random direction
-      particles.append({'id': i, 'r': r, 'n': n, 'v': v, 'f': f, 'radius': 0.5*rcut})
+      particles.append({'id': i, 'r': r, 'n': n, 'v': v, 'f': f, 'radius': radius})
   else:
     # Here we implement avoidance of overlaps 
     i = 0
@@ -76,11 +78,11 @@ def random_init(phi, Lx, Ly = None, rcut = None, poly = None, outfile = 'test.js
           v = [0.0, 0.0]
           f = [0.0, 0.0]
           if poly != None:
-            radius = (1+uniform(-0.5,0.5) * poly) * 0.5*rcut
+            rand_radius = (1+uniform(-0.5,0.5) * poly) * radius
           else:
-            radius = 0.5*rcut
+            rand_radius = radius
           # Add a particle at position x,y with the director pointing in the random direction
-          particles.append({'id': i, 'r': r, 'n': n, 'v': v, 'f': f, 'radius': radius})
+          particles.append({'id': i, 'r': r, 'n': n, 'v': v, 'f': f, 'radius': rand_radius})
           i += 1
           break 
         else:

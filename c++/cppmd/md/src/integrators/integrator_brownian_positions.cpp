@@ -21,6 +21,10 @@ void IntegratorBrownianParticlesPositions::poststep(void)
     _system.particles[pindex].r.x += mu * this->get_time_step() * _system.particles[pindex].forceC.x + sqrt_dt * force_rnd.x;
     _system.particles[pindex].r.y += mu * this->get_time_step() * _system.particles[pindex].forceC.y + sqrt_dt * force_rnd.y;
 
+    _system.particles[pindex].v.x = mu * _system.particles[pindex].forceC.x + force_rnd.x;
+    _system.particles[pindex].v.y = mu * _system.particles[pindex].forceC.y + force_rnd.y;
+
+
     //apply boundary conditions
     host::enforce_periodic(_system.particles[pindex].r, _system.particles[pindex].ip, _system.get_box());
   }
