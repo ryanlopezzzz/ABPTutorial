@@ -11,6 +11,7 @@
 
 //here include all the hpp files of the torques
 #include "../potentials/polar_align.hpp"
+#include "../potentials/velocity_align.hpp"
 
 //here include all the hpp files of the integrators
 #include "../integrators/integrator_brownian_positions.hpp"
@@ -79,6 +80,8 @@ void EvolverClass::add_force(const std::string &name, std::map<std::string, real
         force_list[name] = std::make_unique<SoftRepulsiveForce>(_system, *neighbourlist.get());
         for (auto param : parameters)
             force_list[name]->set_property(param.first, param.second);
+        //if this potential change the global rcut the neighbourlist must be updated
+        this->update_neighbourlist();
     }
     else
         std::cerr << name << " potential not found" << std::endl;
@@ -86,6 +89,16 @@ void EvolverClass::add_force(const std::string &name, std::map<std::string, real
 void EvolverClass::add_torque(const std::string &name, std::map<std::string, real> &parameters)
 {
     if (name.compare("Polar Align") == 0)
+    {
+        //add the force to the list
+        torque_list[name] = std::make_unique<PolarAlign>(_system, *neighbourlist.get());
+        //loop over the parameters and set them up
+        for (auto param : parameters)
+            torque_list[name]->set_property(param.first, param.second);
+        //if this potential change the global rcut the neighbourlist must be updated
+        this->update_neighbourlist();
+    }
+    else if (name.compare("Velocity Align") == 0)
     {
         //add the force to the list
         torque_list[name] = std::make_unique<PolarAlign>(_system, *neighbourlist.get());
