@@ -8,7 +8,7 @@ Soft Repulsive force
 
 void SoftRepulsiveForce::compute_energy(void)
 {
-    std::cerr << "Don't use this function! Not programmed yet!" << std::endl;
+    std::cerr << "Don't use this function SoftRepulsiveForce::compute_energy! Not programmed yet!" << std::endl;
 
     for (int pindex_i = 0; pindex_i < _system.Numparticles; pindex_i ++)
     {

@@ -36,7 +36,6 @@ public:
         }
 
         rcut = 2*max_radius; //cut off radius to be use in neighbourslist, particles must touch to feel force
-        std::cerr << "This is soft repulsive rcut:" << rcut << std::endl;
     }
 
     void set_property(const std::string &prop_name, const double &value) override
